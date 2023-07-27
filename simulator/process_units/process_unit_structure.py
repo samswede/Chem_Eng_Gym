@@ -1,25 +1,25 @@
 from abc import ABC, abstractmethod
+from typing import NoReturn, List, Dict
 
 class ProcessUnit(ABC):
     @abstractmethod
-    def separate(self, mixture):
-        pass
-
-class Separator(ProcessUnit, ABC):
-    @abstractmethod
-    def separate(self, mixture):
+    def __input_validation__(self, *args, **kwargs) -> None:
+        """
+        
+        """
         pass
 
     @abstractmethod
-    def shut_down(self):
+    def __output_validation__(self, *args, **kwargs) -> None:
+        """
+        
+        """
         pass
 
-class DistillationColumn(Separator, ABC):
     @abstractmethod
-    def control_temperature(self, temperature):
+    def CAPEX(self, *args, **kwargs) -> float:
+        """
+        
+        """
         pass
 
-class Extractor(Separator, ABC):
-    @abstractmethod
-    def control_pressure(self, pressure):
-        pass
