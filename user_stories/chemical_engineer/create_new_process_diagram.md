@@ -1,11 +1,10 @@
-# User Story Title
+# Create a new process diagram
 
 ## Description
 
-As a [specific type of user],
-In this [situation / stage of process],
-I want [an action or feature],
-so that [a benefit or reason].
+As a chemical engineer,
+I want to create a new process diagram,
+so that I can model a new chemical process.
 
 ## Business Value
 

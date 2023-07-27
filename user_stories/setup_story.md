@@ -2,9 +2,9 @@
 
 ## Description
 
-As a [specific type of user],
-In this [situation / stage of process],
-I want [an action or feature],
+As a Regular User,
+who has just landed on the page and is presented with the initial setup,
+I want to specify what to do,
 so that [a benefit or reason].
 
 ## Business Value

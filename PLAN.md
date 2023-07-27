@@ -20,6 +20,10 @@ STANDARDISATION
             ErrorType: Description of conditions that cause this error.
         """
 
+    - User stories
+        - To keep development focused and keep track of scope and functionality I have included a user story template
+        - This is to practice ATDD and to make it easier to opensource
+
 
 IDEAS:
     - Make a dictionary that maps elements in node feature vector to corresponding properties
