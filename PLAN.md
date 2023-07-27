@@ -1,6 +1,24 @@
 This is a planning section to keep track of ideas and progress
 
+STANDARDISATION
 
+    Docstring style
+    - Google style:
+        """
+        Short description.
+
+        Longer description if necessary.
+
+        Args:
+            arg1 (type): Description for arg1.
+            arg2 (type): Description for arg2.
+
+        Returns:
+            type: Description of returned object.
+
+        Raises:
+            ErrorType: Description of conditions that cause this error.
+        """
 
 
 IDEAS:
