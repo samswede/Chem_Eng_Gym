@@ -12,7 +12,7 @@ class ProcessUnit(ABC):
             operating_conditions (Dict[str, Any]): A dictionary containing the operating conditions.
         """
         self._id = id
-        self.
+        self._input_validation(design_params)
         self._set_attributes_from_params(design_params)
 
     @final 
