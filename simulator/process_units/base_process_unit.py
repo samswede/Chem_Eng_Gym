@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any
+from typing import Dict, Any, final
 
 class ProcessUnit(ABC):
     @abstractmethod
@@ -11,9 +11,11 @@ class ProcessUnit(ABC):
             id (str): Unique identifier for the process unit.
             operating_conditions (Dict[str, Any]): A dictionary containing the operating conditions.
         """
-        self.id = id
+        self._id = id
+        self.
         self._set_attributes_from_params(design_params)
 
+    @final 
     def _set_attributes_from_params(self, params):
         """
         Unpack design parameters from a dictionary to instance attributes.
@@ -24,8 +26,12 @@ class ProcessUnit(ABC):
         for key, value in params.items():
             setattr(self, key, value)
     
+    @property
+    def id(self):
+        return self._id
+    
     @abstractmethod
-    def input_validation(self, inputs: Dict[str, Any]):
+    def _input_validation(self, inputs: Dict[str, Any]):
         """
         Validate the input to the process unit.
 
@@ -35,7 +41,7 @@ class ProcessUnit(ABC):
         pass
 
     @abstractmethod
-    def output_validation(self, outputs: Dict[str, Any]):
+    def _output_validation(self, outputs: Dict[str, Any]):
         """
         Validate the output from the process unit.
 
@@ -45,7 +51,7 @@ class ProcessUnit(ABC):
         pass
     
     @abstractmethod
-    def set_params(self, params: Dict[str, Any]):
+    def modify_params(self, params: Dict[str, Any]):
         """
         Set parameters of the process unit.
 
@@ -54,11 +60,12 @@ class ProcessUnit(ABC):
         """
         self._set_attributes_from_params(params)
         pass
-
+    
+    @property
     @abstractmethod
-    def get_operating_conditions(self) -> Dict[str, Any]:
+    def params(self) -> Dict[str, Any]:
         """
-        Get operating conditions of the process unit.
+        Get parameters of the process unit.
 
         Returns:
             Dict[str, Any]: A dictionary containing the operating conditions.
@@ -75,7 +82,8 @@ class ProcessUnit(ABC):
             float: The capital expenditure in thousands USD.
         """
         pass
-
+    
+    @property
     @abstractmethod
     def OPEX(self) -> float:
         """
