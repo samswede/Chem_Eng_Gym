@@ -1,5 +1,5 @@
 import unittest
-from src.simulation_engine.process_units.base_process_unit import ConcreteProcessUnit
+from Chem_Eng_Gym.simulation_engine.process_units.base_process_unit import ConcreteProcessUnit
 
 class TestConcreteProcessUnit(unittest.TestCase):
     def setUp(self):
