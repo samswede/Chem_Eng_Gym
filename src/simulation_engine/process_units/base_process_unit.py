@@ -3,7 +3,7 @@ from typing import Dict, Any, final
 
 class ProcessUnit(ABC):
     @abstractmethod
-    def __init__(self, id: str, design_params: Dict[str, Any]):
+    def __init__(self, node_id: str, design_params: Dict[str, Any]):
         """
         Initialize a process unit.
 
@@ -11,7 +11,7 @@ class ProcessUnit(ABC):
             id (str): Unique identifier for the process unit.
             operating_conditions (Dict[str, Any]): A dictionary containing the operating conditions.
         """
-        self._id = id
+        self._node_id = node_id
         self._input_validation(design_params)
         self._set_attributes_from_params(design_params)
 
@@ -27,8 +27,8 @@ class ProcessUnit(ABC):
             setattr(self, key, value)
     
     @property
-    def id(self):
-        return self._id
+    def node_id(self):
+        return self._node_id
     
     @abstractmethod
     def _input_validation(self, inputs: Dict[str, Any]):
@@ -106,3 +106,30 @@ class ProcessUnit(ABC):
             Dict[str, Any]: A dictionary containing the result of running the process unit.
         """
         pass
+
+
+
+class ConcreteProcessUnit(ProcessUnit):
+    def __init__(self, id, design_params):
+        super().__init__(id, design_params)
+    
+    def _input_validation(self, inputs):
+        pass  # Do something to validate the inputs
+    
+    def _output_validation(self, outputs):
+        pass  # Do something to validate the outputs
+
+    @property
+    def params(self):
+        return {"param1": self.param1, "param2": self.param2}
+    
+    @property
+    def CAPEX(self):
+        pass  # Calculate capital expenditure
+    
+    @property
+    def OPEX(self):
+        pass  # Calculate operating expenditure
+
+    def run(self, time):
+        pass  # Do something to simulate running the process unit
