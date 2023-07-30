@@ -11,6 +11,8 @@ class ProcessUnit(ABC):
             id (str): Unique identifier for the process unit.
             operating_conditions (Dict[str, Any]): A dictionary containing the operating conditions.
         """
+        # self._param_bounds = {}
+
         self._node_id = node_id
         self._input_validation(design_params)
         self._set_attributes_from_params(design_params)
@@ -26,6 +28,7 @@ class ProcessUnit(ABC):
         for key, value in params.items():
             setattr(self, key, value)
     
+    @final
     @property
     def node_id(self):
         return self._node_id
@@ -51,14 +54,14 @@ class ProcessUnit(ABC):
         pass
     
     @abstractmethod
-    def modify_params(self, params: Dict[str, Any]):
+    def modify_params(self, new_params: Dict[str, Any]):
         """
         Set parameters of the process unit.
 
         Args:
-            params (Dict[str, Any]): A dictionary containing the new operating conditions.
+            params (Dict[str, Any]): A dictionary containing the new parameters.
         """
-        self._set_attributes_from_params(params)
+        self._set_attributes_from_params(new_params)
         pass
     
     @property
@@ -72,9 +75,20 @@ class ProcessUnit(ABC):
         """
         pass
 
+    @final
+    @property
+    def param_bounds(self) -> Dict[str, set]:
+        """
+        Get bounds of parameters of the process unit.
+
+        Returns:
+            Dict[str, Any]: A dictionary containing the the lower and upper bounds.
+        """
+        return self._param_bounds
+
     @property
     @abstractmethod
-    def CAPEX(self) -> float:
+    def capex(self) -> float:
         """
         Calculate capital expenditure.
 
@@ -85,7 +99,7 @@ class ProcessUnit(ABC):
     
     @property
     @abstractmethod
-    def OPEX(self) -> float:
+    def opex(self) -> float:
         """
         Calculate operating expenditure.
 
@@ -110,26 +124,56 @@ class ProcessUnit(ABC):
 
 
 class ConcreteProcessUnit(ProcessUnit):
-    def __init__(self, id, design_params):
-        super().__init__(id, design_params)
-    
+    def __init__(self, node_id, design_params):
+
+        self._param_bounds = {'param1': (0, 5),
+                              'param2': (0, 5),
+                              'param3': (0, 5),
+                              'param4': (0, 5)
+                              }
+        
+        self._node_id = node_id
+        self._input_validation(design_params)
+        self._set_attributes_from_params(design_params)
+
+    @property
+    def node_id(self):
+        return self._node_id
+
     def _input_validation(self, inputs):
-        pass  # Do something to validate the inputs
-    
+        for param, value in inputs.items():
+            if param in self._param_bounds:
+                lower, upper = self._param_bounds[param]
+                if not lower <= value <= upper:
+                    raise ValueError(f"{param} value {value} is out of bounds [{lower}, {upper}]")
+            else:
+                raise ValueError(f"Parameter {param} is not recognized and does not have defined bounds.")
+
+        
     def _output_validation(self, outputs):
         pass  # Do something to validate the outputs
+
+    def modify_params(self, new_params: Dict[str, Any]) -> None:
+        """
+        Set parameters of the process unit.
+
+        Args:
+            params (Dict[str, Any]): A dictionary containing the new parameters.
+        """
+        self._set_attributes_from_params(new_params)
+        pass
 
     @property
     def params(self):
         return {"param1": self.param1, "param2": self.param2}
     
     @property
-    def CAPEX(self):
-        pass  # Calculate capital expenditure
+    def capex(self) -> float:
+        return self.param1 * self.param2 **2
     
     @property
-    def OPEX(self):
-        pass  # Calculate operating expenditure
+    def opex(self):
+        return self.param1 *365.0
 
     def run(self, time):
         pass  # Do something to simulate running the process unit
