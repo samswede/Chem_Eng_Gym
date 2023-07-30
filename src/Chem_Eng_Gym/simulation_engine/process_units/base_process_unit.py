@@ -132,9 +132,10 @@ class ConcreteProcessUnit(ProcessUnit):
                               'param4': (0, 5)
                               }
         
-        self._node_id = node_id
-        self._input_validation(design_params)
-        self._set_attributes_from_params(design_params)
+        # self._node_id = node_id
+        # self._input_validation(design_params)
+        # self._set_attributes_from_params(design_params)
+        super().__init__(node_id, design_params)
 
     @property
     def node_id(self):
@@ -172,7 +173,7 @@ class ConcreteProcessUnit(ProcessUnit):
         return self.param1 * self.param2 **2
     
     @property
-    def opex(self):
+    def opex(self) -> float:
         return self.param1 *365.0
 
     def run(self, time):
