@@ -1,6 +1,7 @@
 import datetime
 import os
-
+import pandas as pd
+from pyomo.environ import Var, Objective, value
 # class Simulator:
 #     def __init__(self):
 #         self.data_handler = DataHandler()
@@ -14,8 +15,31 @@ import os
 
 
 class SimulationFileManager:
-    def __init__(self, base_dir='Simulations'):
+    def __init__(self, base_dir='/Users/samuelandersson/Dev/github_projects/Chem_Eng_Gym/src/Chem_Eng_Gym/data/simulations'):
         self.base_dir = base_dir
+
+    def extract_results_from_model(self, pyomo_model):
+        # Extract time data
+        data = {'t': [t for t in pyomo_model.t]}
+
+        # Extract variable data into a dictionary
+        for v in pyomo_model.component_objects(Var, active=True):
+            var_name = str(v)
+            data[var_name] = [value(v[t]) for t in pyomo_model.t]
+
+        # Include the objective function value, if there is one
+        for o in pyomo_model.component_objects(Objective, active=True):
+            obj_name = str(o)
+            if o.is_indexed():
+                data[obj_name] = [value(o[t]) if t in o else float('nan') for t in pyomo_model.t]
+            else:
+                data[obj_name] = value(o)
+
+        # Convert dictionary to DataFrame
+        df = pd.DataFrame(data)
+        
+        # Return DataFrame
+        return df
 
     def get_directory_structure(self, simulation_name):
         now = datetime.now()

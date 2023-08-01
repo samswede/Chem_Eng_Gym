@@ -1,6 +1,7 @@
 
 from pyomo.environ import *
 from pyomo.dae import *
+from Chem_Eng_Gym.utils.performance import Timer
 
 class WaterTank:
     def __init__(self, m, name, Cv=0.1, A=1.0, feed=None):
@@ -13,42 +14,50 @@ class WaterTank:
         self._build_model()
 
     def _build_model(self):
-        m = self.m
+        self._define_variables()
+        self._define_inlet_flowrate()
+        self._define_outlet_flowrate()
+        self._define_differential_equation()
+        self._define_initial_condition()
 
-        # Variables
+    def _define_variables(self):
+        m = self.m
         m.add_component(self.name + '_V', Var(m.t, within=NonNegativeReals))
         m.add_component(self.name + '_h', Var(m.t, within=NonNegativeReals))
         m.add_component(self.name + '_F_out', Var(m.t, within=NonNegativeReals))
         m.add_component(self.name + '_F_in', Var(m.t, initialize=0.0))
 
-        V = getattr(m, self.name + '_V')
-        h = getattr(m, self.name + '_h')
+        self.V = getattr(m, self.name + '_V')
+        self.h = getattr(m, self.name + '_h')
         self.F_out = getattr(m, self.name + '_F_out')  # Store F_out as an attribute
-        F_in = getattr(m, self.name + '_F_in')
+        self.F_in = getattr(m, self.name + '_F_in')
 
-        # Inlet flow rate
+    def _define_inlet_flowrate(self):
+        m = self.m
         if self.feed is None:
-            F_in[0].fix(0.0)
+            self.F_in[0].fix(0.0)
         else:
             def _F_in_rule(m, i):
-                return F_in[i] == self.feed[i]
+                return self.F_in[i] == self.feed[i]
             m.add_component(self.name + '_F_in_con', Constraint(m.t, rule=_F_in_rule))
 
-        # Outlet flow rate
+    def _define_outlet_flowrate(self):
+        m = self.m
         def _F_out_rule(m, i):
-            return self.F_out[i] == self.Cv*sqrt(h[i] + 1e-8)  # Adding a small positive number inside sqrt
+            return self.F_out[i] == self.Cv*sqrt(self.h[i] + 1e-8)  # Adding a small positive number inside sqrt
         m.add_component(self.name + '_F_out_con', Constraint(m.t, rule=_F_out_rule))
 
-        # Differential equation
-        m.add_component(self.name + '_dVdt', DerivativeVar(V, wrt=m.t))
-        dVdt = getattr(m, self.name + '_dVdt')
+    def _define_differential_equation(self):
+        m = self.m
+        m.add_component(self.name + '_dVdt', DerivativeVar(self.V, wrt=m.t))
+        self.dVdt = getattr(m, self.name + '_dVdt')
 
         def _differential_eqn(m, i):
-            return dVdt[i] == F_in[i] - self.F_out[i]
+            return self.dVdt[i] == self.F_in[i] - self.F_out[i]
         m.add_component(self.name + '_differential_eqn', Constraint(m.t, rule=_differential_eqn))
 
-        # Initial condition
-        V[0].fix(0.0)
+    def _define_initial_condition(self):
+        self.V[0].fix(0.0)
 
 
 class System:
@@ -83,18 +92,18 @@ class System:
         else:
             print('Unsuccessful solve: ' + str(results.solver))
 
-import time
+# import time
 
-class Timer:
-    def __init__(self, name):
-        self.name = name
+# class Timer:
+#     def __init__(self, name):
+#         self.name = name
 
-    def __enter__(self):
-        self.start = time.perf_counter()
+#     def __enter__(self):
+#         self.start = time.perf_counter()
 
-    def __exit__(self, *args):
-        self.end = time.perf_counter()
-        print(f"{self.name} took {self.end - self.start} seconds")
+#     def __exit__(self, *args):
+#         self.end = time.perf_counter()
+#         print(f"{self.name} took {self.end - self.start} seconds")
 
 # Create a system
 with Timer("System creation"):
