@@ -1,7 +1,10 @@
 import pandas as pd
+
+import matplotlib.pyplot as plt
 import seaborn as sns
 import plotly.graph_objects as go
 
+from pyomo.environ import Var, Constraint, Objective, value
 from pyomo.environ import *
 from pyomo.dae import *
 
@@ -22,8 +25,8 @@ def setup_model():
     alpha, beta, delta, gamma = 0.1, 0.02, 0.3, 0.01
 
     # Initial conditions
-    m.ic1 = Constraint(expr=m.x[0] == 40)
-    m.ic2 = Constraint(expr=m.y[0] == 9)
+    m.ic1 = Constraint(expr=m.x[0] == 400)
+    m.ic2 = Constraint(expr=m.y[0] == 100)
 
     # Lotka-Volterra equations
     m.ode1 = Constraint(m.t, rule=lambda m, t: m.dxdt[t] == alpha*m.x[t] - beta*m.x[t]*m.y[t])
@@ -51,6 +54,34 @@ def extract_results(model):
 
     return pd.DataFrame(data)
 
+
+def extract_results_from_model(model):
+    # Extract time data
+    data = {'t': [t for t in model.t]}
+
+    # Extract variable data into a dictionary
+    for v in model.component_objects(Var, active=True):
+        var_name = str(v)
+        data[var_name] = [value(v[t]) for t in model.t]
+
+    # Include the objective function value, if there is one
+    for o in model.component_objects(Objective, active=True):
+        obj_name = str(o)
+        if o.is_indexed():
+            data[obj_name] = [value(o[t]) if t in o else float('nan') for t in model.t]
+        else:
+            data[obj_name] = value(o)
+
+    # Convert dictionary to DataFrame
+    df = pd.DataFrame(data)
+    
+    # Return DataFrame
+    return df
+
+
+
+
+
 def plot_results_plotly(df):
     fig = go.Figure()
 
@@ -62,18 +93,29 @@ def plot_results_plotly(df):
     fig.show()
 
 def plot_results_seaborn(df):
-    f, axes = plt.subplots(nrows=2, figsize=(7, 7))
+    variables = df.columns[1:]  # Skip the 't' column
+    n_vars = len(variables)
+    n_rows = (n_vars + 1) // 2  # Number of rows, rounded up
 
-    sns.lineplot(x=df['t'], y=df['x'], ax=axes[0]).set_title('Prey over time')
-    sns.lineplot(x=df['t'], y=df['y'], ax=axes[1]).set_title('Predator over time')
+    fig, axes = plt.subplots(n_rows, 2, figsize=(14, n_rows*5))  # Create a subplot grid
+    axes = axes.flatten()  # Flatten the 2D array of axes to easily iterate over it
+
+    # Generate a line plot for each variable
+    for i, var in enumerate(variables):
+        sns.lineplot(x=df['t'], y=df[var], ax=axes[i]).set_title(f'{var} over time')
+
+    # Remove empty subplots
+    if n_vars % 2:
+        fig.delaxes(axes[-1])
 
     plt.tight_layout()
     plt.show()
+
 
 # Usage:
 m = setup_model()
 m = solve_model(m)
 
-df = extract_results(m)
+df = extract_results_from_model(m)
 plot_results_seaborn(df)
-plot_results_plotly(df)
+
