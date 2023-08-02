@@ -58,6 +58,11 @@ class FlowSheet:
         return tank
 
     def solve(self, print_results=False):
+        """AI is creating summary for solve
+
+        Args:
+            print_results (bool, optional): [description]. Defaults to False.
+        """
         solver = SolverFactory('ipopt')
         results = solver.solve(self.m, tee=print_results)
         if (results.solver.status == SolverStatus.ok) and (results.solver.termination_condition == TerminationCondition.optimal):
