@@ -2,6 +2,11 @@ import datetime
 import os
 import pandas as pd
 from pyomo.environ import Var, Objective, value
+
+import networkx as nx
+from networkx.readwrite import json_graph
+import json
+
 # class Simulator:
 #     def __init__(self):
 #         self.data_handler = DataHandler()
@@ -100,4 +105,9 @@ class SimulationFileManager:
     # Add a load function here to load data if necessary
     # def load_simulation_files(self, dir_structure):
     #     ...
+
+    def save_flowsheet_graph(self, filename, networkx_graph):
+        data = json_graph.node_link_data(networkx_graph)
+        with open(filename, 'w') as f:
+            json.dump(data, f)
 

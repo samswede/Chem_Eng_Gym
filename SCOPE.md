@@ -15,6 +15,8 @@ Depending on the nature of the system and the level of detail required, various 
 - [ ] Partial Differential-Algebraic Equations (PDAEs)
 - [ ] High Index PDAEs
 
+Note: as I am a mere mortal, I do not have the competence nor ambition to build a fully Equation Oriented process software like gPROMS in python. But if YOU are convinced you have what it takes and for some reason want to implement it here for the sake of open source, then by all means do so.
+
 ### Scale of Analysis
 
 The scale of analysis can vary widely, from the molecular level to the global economy:
