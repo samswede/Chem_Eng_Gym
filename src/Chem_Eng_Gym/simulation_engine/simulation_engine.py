@@ -20,7 +20,7 @@ TO DO:
 
 """
 
-class FlowSheet:
+class EOFlowSheet:
     def __init__(self, t_end=10):
         self.t_end = t_end
         self.m = self._build_model()
@@ -78,7 +78,7 @@ class FlowSheet:
 
 # Create a system
 with Timer("Flowsheet creation"):
-    flow_sheet = FlowSheet()
+    flow_sheet = EOFlowSheet()
 
 # Add the first tank
 with Timer("Adding first tank"):
