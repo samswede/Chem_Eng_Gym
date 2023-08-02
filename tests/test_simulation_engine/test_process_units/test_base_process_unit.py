@@ -57,3 +57,7 @@ class TestConcreteProcessUnit(unittest.TestCase):
     def test_opex(self):
         self.assertEqual(self.unit.opex, self.unit.param1 * 365)
         self.assertTrue(isinstance(self.unit.opex, float))
+
+# Run the tests
+if __name__ == '__main__':
+    unittest.main()

@@ -126,3 +126,8 @@ class TestBatchReactorIsothermal(unittest.TestCase):
     #     # We check the final concentration
     #     final_time = max(self.reactor.model.t)
     #     self.assertAlmostEqual(self.reactor.model.C[final_time].value, 0.0, places=2)
+
+
+# Run the tests
+if __name__ == '__main__':
+    unittest.main()

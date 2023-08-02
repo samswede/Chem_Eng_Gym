@@ -8,6 +8,17 @@ import networkx as nx
 from networkx.readwrite import json_graph
 import json
 
+"""
+TO DO:
+    - Fix networkx graph.
+        - Currently, the outlet stream is dangling
+        - Decide if streams should be nodes or edges
+            - if edges, determine how to add and replace empty "action nodes"
+            - I think action nodes are visually great because they offer the affordance of clicking on them
+                they could be colored and shown in a way that begs you to click on them. Like pulsating.
+                When you do, it passes that through the agent and you somehow see the recommended options
+
+"""
 
 class FlowSheet:
     def __init__(self, t_end=10):
@@ -54,10 +65,10 @@ class FlowSheet:
         else:
             print('Unsuccessful solve: ' + str(results.solver))
 
-    def save_graph(self, filename):
-        data = json_graph.node_link_data(self.graph)
-        with open(filename, 'w') as f:
-            json.dump(data, f)
+    # def save_graph(self, filename):
+    #     data = json_graph.node_link_data(self.graph)
+    #     with open(filename, 'w') as f:
+    #         json.dump(data, f)
 
 
 # Create a system
