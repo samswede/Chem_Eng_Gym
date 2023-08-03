@@ -2,11 +2,11 @@ from pyomo.environ import *
 from pyomo.dae import *
 
 class WaterTank:
-    def __init__(self, m, name, Cv=0.1, A=1.0, feed=None):
+    def __init__(self, m, name, params, feed=None):
         self.m = m
         self.name = name
-        self.Cv = Cv
-        self.A = A
+        self.Cv = params['Cv']
+        self.A = params['A']
         self.feed = feed
 
         self._build_model()
