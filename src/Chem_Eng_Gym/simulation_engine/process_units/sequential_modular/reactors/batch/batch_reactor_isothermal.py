@@ -1,23 +1,29 @@
-from Chem_Eng_Gym.simulation_engine.process_units.base_process_unit import ProcessUnit
+from Chem_Eng_Gym.simulation_engine.process_units.base_process_unit import BaseProcessUnit
 from pyomo.environ import *
 from pyomo.dae import *
 
 from typing import Dict, Tuple, List, Any
 
-class BatchReactorIsothermal(ProcessUnit):
+class BatchReactorIsothermal(BaseProcessUnit):
     def __init__(self, node_id, design_params):
 
         # Specify the variable data
         self.variable_data = {
-                                'var1': {'type': 'algebraic', 'init': 1.0, 'domain': NonNegativeReals, 'bounds': (0.0, 5.0)}, 
-                                'var2': {'type': 'algebraic', 'init': 2.0, 'domain': NonNegativeReals, 'bounds': (0.0, 5.0)},
-                                'var3': {'type': 'differential', 'initial_condition': 0.0, 'init': 1.0, 'domain': NonNegativeReals, 'bounds': (0.0, 5.0)},
-                                'var4': {'type': 'differential', 'initial_condition': 0.0, 'init': 2.0, 'domain': NonNegativeReals, 'bounds': (0.0, 5.0)}
+                                'var1': {'type': 'algebraic', 'init': 1.0, 'domain': NonNegativeReals, 'bounds': (0.0, 5.0), 
+                                         'definition': ''}, 
+                                'var2': {'type': 'algebraic', 'init': 2.0, 'domain': NonNegativeReals, 'bounds': (0.0, 5.0), 
+                                         'definition': ''},
+                                'var3': {'type': 'differential', 'initial_condition': 0.0, 'init': 1.0, 'domain': NonNegativeReals, 'bounds': (0.0, 5.0), 
+                                         'definition': ''},
+                                'var4': {'type': 'differential', 'initial_condition': 0.0, 'init': 2.0, 'domain': NonNegativeReals, 'bounds': (0.0, 5.0), 
+                                         'definition': ''}
                             }
 
         self.constraint_data =    {
-                                'constraint1': {'expr': self.constraint_1_expr, 'assumptions': ['assumption 1', 'assumption 2']}, 
-                                'constraint2': {'expr': self.constraint_2_expr, 'assumptions': ['assumption 1', 'assumption 3']}
+                                'constraint1': {'expr': self.constraint_1_expr, 
+                                                'assumptions': ['assumption 1', 'assumption 2']}, 
+                                'constraint2': {'expr': self.constraint_2_expr, 
+                                                'assumptions': ['assumption 1', 'assumption 3']}
                                 }
         
         self.model = None

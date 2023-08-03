@@ -1,7 +1,7 @@
 # Sequential Modular Flowsheet Paradigm
 from pyomo.environ import *
 from pyomo.dae import *
-from Chem_Eng_Gym.simulation_engine.process_units.sequential_modular. import WaterTank
+#from Chem_Eng_Gym.simulation_engine.process_units.sequential_modular.tanks import WaterTank
 
 import networkx as nx
 

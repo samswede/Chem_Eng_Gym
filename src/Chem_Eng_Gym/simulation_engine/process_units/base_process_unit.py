@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Any, final
 
-class ProcessUnit(ABC):
+class BaseProcessUnit(ABC):
     @abstractmethod
     def __init__(self, node_id: str, design_params: Dict[str, Any]):
         """
@@ -123,7 +123,7 @@ class ProcessUnit(ABC):
 
 
 
-class ConcreteProcessUnit(ProcessUnit):
+class ConcreteProcessUnit(BaseProcessUnit):
     def __init__(self, node_id, design_params):
 
         self._param_bounds = {'param1': (0, 5),
