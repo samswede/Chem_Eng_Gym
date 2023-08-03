@@ -1,14 +1,34 @@
 import unittest
 from Chem_Eng_Gym.simulation_engine.process_units.base_process_unit import ConcreteProcessUnit
+from pyomo.environ import Var
 
 class TestConcreteProcessUnit(unittest.TestCase):
     def setUp(self):
-        design_params = {'param1': 1.0, 
+        feed = {'temperature': 300.0,
+                'pressure': 1.0,
+                'total_mass': 200.0, 'total_moles': 50.0, 
+                'total_mass_enthalpy': 200.0, 'total_molar_enthalpy': 200.0,
+
+                'vapour_phase': {   'component_A': {'mass_flowrate': 100.0, 'mass_fraction': 0.50, 
+                                                    'molar_flowrate': 48.0, 'molar_fraction': 0.96,
+                                                    'mass_enthalpy': 100, 'molar_enthalpy': 100},
+                                    'component_B': {'mass_flowrate': 100.0, 'mass_fraction': 0.50, 
+                                                    'molar_flowrate': 2.0, 'molar_fraction': 0.04},
+                                    'component_C': {'mass_flowrate': 0.0, 'mass_fraction': 0.0, 
+                                                    'molar_flowrate': 0.0, 'molar_fraction': 0.0}},
+                'liquid_phase': {   'component_B': {'mass_flowrate': 0.0, 'mass_fraction': 0.0, 
+                                                    'molar_flowrate': 0.0, 'molar_fraction': 0.0},
+                                    'component_C': {'mass_flowrate': 0.0, 'mass_fraction': 0.0, 
+                                                    'molar_flowrate': 0.0, 'molar_fraction': 0.0}},
+                'solid_phase': {},
+                }
+        
+        params = {'param1': 1.0, 
                          'param2': 2.0, 
                          'param3': 3.0, 
                          'param4': 4.0
                         }
-        self.unit = ConcreteProcessUnit("test_unit", design_params)
+        self.unit = ConcreteProcessUnit("test_unit", feed, params)
 
     def test_initial_params(self):
         self.assertEqual(self.unit.node_id, "test_unit")
@@ -16,12 +36,12 @@ class TestConcreteProcessUnit(unittest.TestCase):
         self.assertEqual(self.unit.param2, 2.0)
 
     def test_consistent_bounds(self):
-        design_params = {'param1': 1.0, 
+        params = {'param1': 1.0, 
                          'param2': 2.0, 
                          'param3': 3.0, 
                          'param4': 4.0
                         }
-        self.assertEqual(set(self.unit.param_bounds.keys()), set(design_params.keys()))
+        self.assertEqual(set(self.unit.param_bounds.keys()), set(params.keys()))
 
     def test_modify_params(self):
         new_params = {'param1': 3.0, 'param2': 4.0}

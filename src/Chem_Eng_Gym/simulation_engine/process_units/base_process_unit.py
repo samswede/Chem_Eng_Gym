@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from typing import Dict, Any, final
+from typing import Dict, Any, final, List
 
 class BaseProcessUnit(ABC):
     @abstractmethod
-    def __init__(self, node_id: str, design_params: Dict[str, Any]):
+    def __init__(self, node_id: str, feed_in: Any, params: Dict[str, Any]):
         """
         Initialize a process unit.
 
@@ -14,8 +14,8 @@ class BaseProcessUnit(ABC):
         # self._param_bounds = {}
 
         self._node_id = node_id
-        self._input_validation(design_params)
-        self._set_attributes_from_params(design_params)
+        self._input_validation(params)
+        self._set_attributes_from_params(params)
 
     @final 
     def _set_attributes_from_params(self, params):
@@ -23,7 +23,7 @@ class BaseProcessUnit(ABC):
         Unpack design parameters from a dictionary to instance attributes.
 
         Args:
-            design_params (Dict[str, Any]): A dictionary containing the design parameters.
+            params (Dict[str, Any]): A dictionary containing the design parameters.
         """
         for key, value in params.items():
             setattr(self, key, value)
@@ -124,7 +124,7 @@ class BaseProcessUnit(ABC):
 
 
 class ConcreteProcessUnit(BaseProcessUnit):
-    def __init__(self, node_id, design_params):
+    def __init__(self, node_id, feed_in, params):
 
         self._param_bounds = {'param1': (0, 5),
                               'param2': (0, 5),
@@ -132,10 +132,10 @@ class ConcreteProcessUnit(BaseProcessUnit):
                               'param4': (0, 5)
                               }
         
-        # self._node_id = node_id
-        # self._input_validation(design_params)
-        # self._set_attributes_from_params(design_params)
-        super().__init__(node_id, design_params)
+        self._node_id = node_id
+        self._input_validation(params)
+        self._set_attributes_from_params(params)
+        #super().__init__(node_id, params)
 
     @property
     def node_id(self):

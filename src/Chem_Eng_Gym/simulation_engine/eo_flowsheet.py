@@ -18,7 +18,7 @@ class EOFlowSheet:
         return m
 
     # abstract this to 'add_process_unit' later
-    def add_tank(self, name, Cv=0.1, A=1.0, feed=None):
+    def add_tank(self, process_unit_identifier, Cv=0.1, A=1.0, feed=None):
         """AI is creating summary for add_tank
 
         Args:
@@ -30,15 +30,15 @@ class EOFlowSheet:
         Returns:
             [type]: [description]
         """
-        tank = WaterTank(self.m, name, Cv, A, feed)
+        tank = WaterTank(self.m, process_unit_identifier, Cv, A, feed)
         self.tanks.append(tank)
 
         # Add tank node to graph
-        self.graph.add_node(name, Cv=Cv, A=A)
+        self.graph.add_node(process_unit_identifier, Cv=Cv, A=A)
 
         # Add edge to graph if tank is fed by another tank
         if feed is not None:
-            self.graph.add_edge(feed.name, name)
+            self.graph.add_edge(feed.name, process_unit_identifier)
 
         return tank
 
