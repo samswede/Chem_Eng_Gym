@@ -9,7 +9,13 @@
 
 import numpy as np
 from scipy.linalg import null_space
+'''
+TO DO:
+    - REMOVE round(value, 3) from method get_reaction_invariants() because it will fuck things up later.
+        - Will require fixing test as well
 
+    - Convert reactions dict into a reaction network for perception by the agent
+'''
 
 class ReactionInvariants:
     def __init__(self, reactions_dict):
