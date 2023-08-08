@@ -19,18 +19,19 @@ TO DO:
                 When you do, it passes that through the agent and you somehow see the recommended options
 
 """
-params = {'Cv': 0.1, 'A': 0.5}
+params_1 = {'Cv': 0.1, 'A': 0.5}
+params_2 = {'Cv': 0.3, 'A': 0.3}
 # Create a system
 with Timer("Flowsheet creation"):
     flow_sheet = EOFlowSheet()
 
 # Add the first tank
 with Timer("Adding first tank"):
-    tank1 = flow_sheet.add_tank('tank1', params)
+    tank1 = flow_sheet.add_tank('tank1', params_1)
 
 # Add the second tank, fed by the first
 with Timer("Adding second tank"):
-    tank2 = flow_sheet.add_tank('tank2', params, feed=tank1.F_out)
+    tank2 = flow_sheet.add_tank('tank2', params_2, feed=tank1.F_out)
 
 # Solve the flow_sheet
 with Timer("Solving the EO flow_sheet"):

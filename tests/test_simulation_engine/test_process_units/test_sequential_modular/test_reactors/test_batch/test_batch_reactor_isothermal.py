@@ -1,5 +1,5 @@
 import unittest
-from Chem_Eng_Gym.simulation_engine.process_units.reactors.batch.batch_reactor_isothermal import BatchReactorIsothermal
+from Chem_Eng_Gym.simulation_engine.process_units.sequential_modular.reactors.batch.batch_reactor_isothermal import BatchReactorIsothermal
 
 from pyomo.environ import *
 from pyomo.dae import *

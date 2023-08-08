@@ -5,7 +5,7 @@ from pyomo.dae import *
 from typing import Dict, Tuple, List, Any
 
 class BatchReactorIsothermal(BaseProcessUnit):
-    def __init__(self, node_id, design_params):
+    def __init__(self, node_id, design_params, feed= None):
 
         # Specify the variable data
         self.variable_data = {

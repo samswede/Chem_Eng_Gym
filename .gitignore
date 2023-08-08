@@ -4,6 +4,9 @@ trained_models/
 # Ignore data for now because I don't know how big the files are
 data/
 
+# Ignore all temporary scrap scripts
+scrap*.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
