@@ -53,7 +53,7 @@ class ReactionInvariants:
         for idx, invariant_vector in enumerate(self.null_space_stoichiometric_matrix.T):
             invariant_dict = {}
             for species_idx, value in enumerate(invariant_vector):
-                invariant_dict[f'M_{species[species_idx]}'] = round(value, 3)
+                invariant_dict[f'M_{species[species_idx]}'] = round(value, 32)
             reaction_invariants[f'M_{idx + 1}'] = invariant_dict
 
         return reaction_invariants
