@@ -15,6 +15,7 @@ TO DO:
         - Will require fixing test as well
 
     - Convert reactions dict into a reaction network for perception by the agent
+        - and vice versa. Should be interchangeable.
 '''
 
 class ReactionInvariants:

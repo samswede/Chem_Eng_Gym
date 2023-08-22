@@ -70,8 +70,15 @@ IDEAS:
     - I want to be able to run simulations and plot results in graphs
     - Parameter estimation. Don't know what it is but need to know for exam, and what better way to learn than to do.
 
+CODING PRACTICES
 
-Test Driven Development
+    Test Driven Development
+    - Start by making a test of the class, and then make the code via red, green, refactor. This will keep things modular and maintainable.
+    It will be slow at first, but slow is smooth and smooth is fast.
+    - This will not accumulate technical debt
+
+    Law of Demeter
+    - Ensure that this practice is followed so that no one class needs deep knowledge of the nested methods and inner workings of other objects it calls. This level of abstraction makes sure things don't break and new people can easily add things.
 
 
     
